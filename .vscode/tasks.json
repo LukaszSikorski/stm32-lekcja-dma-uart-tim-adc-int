@@ -1,0 +1,82 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flash STM32",
+            "type": "shell",
+            "command": "/home/lukasz/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_Programmer_CLI",
+            "args": [
+                "-c",
+                "port=SWD",
+                "-w",
+                "${workspaceFolder}/build/Release/lekcja-dma-adc-uart-pwm.elf",
+                "-v",
+                "--rst"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build STM32",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "Debug"
+            ],
+            "options": {
+                "env": {
+                    "PATH": "/usr/bin:${env:PATH}"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build STM32 (Release)",
+            "type": "shell",
+            "command": "cmake --preset Release && cmake --build --preset Release",
+            "options": {
+                "env": {
+                    "PATH": "/usr/bin:${env:PATH}"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "Build and Flash STM32",
+            "dependsOn": [
+                "Build STM32 (Release)",
+                "Flash STM32"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
